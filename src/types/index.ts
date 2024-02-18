@@ -9,10 +9,7 @@
 export * as response from "./responses";
 
 // Export base types
-export type {
-  NumberLike,
-  OrderType,
-  OrderSide,
-  Resolution,
-  RequestOptions,
-} from "./base";
+export type { NumberLike, OrderType, OrderSide, Resolution } from "./base";
+
+// Export params types
+export type * as params from "./params";

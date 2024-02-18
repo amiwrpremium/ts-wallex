@@ -35,7 +35,7 @@ export class Client {
   /**
    * Additional request parameters to be included in API requests.
    */
-  public requestParams: t.RequestOptions = {};
+  public requestParams: t.params.RequestOptions = {};
 
   /**
    * The Axios instance used for making HTTP requests.
@@ -59,18 +59,12 @@ export class Client {
 
   /**
    * Constructs a new Client instance.
-   * @param apiKey The API key for authenticating requests (optional).
-   * @param requestParams Additional request parameters (optional).
-   * @param raiseDetailedErrors Indicates whether to raise detailed errors (optional, default: false).
+   * @param {ClientParams} options The client options.
    */
-  constructor(
-    apiKey?: string,
-    requestParams?: any,
-    raiseDetailedErrors: boolean = false,
-  ) {
-    this.apiKey = apiKey;
-    if (requestParams) {
-      this.requestParams = requestParams;
+  constructor(options: t.params.ClientParams) {
+    this.apiKey = options.apiKey;
+    if (options.requestParams) {
+      this.requestParams = options.requestParams;
     }
 
     // Initialize Axios instance
@@ -81,7 +75,7 @@ export class Client {
       },
     });
 
-    this.raiseDetailedErrors = raiseDetailedErrors;
+    this.raiseDetailedErrors = options.raiseDetailedErrors ?? false;
   }
 
   /**
@@ -98,13 +92,13 @@ export class Client {
    * Retrieves request configuration arguments for making HTTP requests.
    * @param method The HTTP request method (e.g., GET, POST, etc.).
    * @param signed Indicates whether the request requires authentication.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns The request configuration.
    */
   private getRequestKwargs(
     method: string,
     signed: boolean,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): AxiosRequestConfig {
     // Set default timeout if not provided
     kwargs.timeout = kwargs.timeout || this.requestTimeout;
@@ -122,7 +116,7 @@ export class Client {
 
     // Add API key to headers if request requires authentication
     if (signed) {
-      const headers: t.RequestOptions = kwargs.headers || {};
+      const headers: t.params.RequestOptions = kwargs.headers || {};
       headers["x-api-key"] = this.apiKey;
       kwargs.headers = headers;
     }
@@ -141,7 +135,7 @@ export class Client {
    * @param method The HTTP request method (e.g., GET, POST, etc.).
    * @param uri The complete URI of the API endpoint.
    * @param signed Indicates whether the request requires authentication (default: false).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the response data.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
@@ -149,7 +143,7 @@ export class Client {
     method: string,
     uri: string,
     signed: boolean = false,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     const requestConfig = this.getRequestKwargs(method, signed, kwargs);
 
@@ -190,7 +184,7 @@ export class Client {
    * @param path The endpoint path.
    * @param signed Indicates whether the request requires authentication (default: false).
    * @param version The API version (default: v1).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the response data.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
@@ -199,7 +193,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     const uri = this.createApiUri(path, version);
     return await this.request(method, uri, signed, kwargs);
@@ -210,7 +204,7 @@ export class Client {
    * @param path The endpoint path.
    * @param signed Indicates whether the request requires authentication (default: false).
    * @param version The API version (default: v1).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the response data.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
@@ -218,7 +212,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     return await this.requestAPI("GET", path, signed, version, kwargs);
   }
@@ -228,7 +222,7 @@ export class Client {
    * @param path The endpoint path.
    * @param signed Indicates whether the request requires authentication (default: false).
    * @param version The API version (default: v1).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the response data.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
@@ -236,7 +230,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     return await this.requestAPI("POST", path, signed, version, kwargs);
   }
@@ -246,7 +240,7 @@ export class Client {
    * @param path The endpoint path.
    * @param signed Indicates whether the request requires authentication (default: false).
    * @param version The API version (default: v1).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the response data.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
@@ -254,31 +248,31 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     return await this.requestAPI("DELETE", path, signed, version, kwargs);
   }
 
   /**
    * Fetches market statistics.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the market statistics result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchMarkets(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.MarketsStatsResult> {
     return await this.get("markets", false, this.v1, kwargs);
   }
 
   /**
    * Fetches currency statistics.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the currency statistics result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchCurrenciesStats(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.CurrenciesStatsResult> {
     return await this.get("currencies/stats", false, this.v1, kwargs);
   }
@@ -286,25 +280,25 @@ export class Client {
   /**
    * Fetches the order book for a specific symbol.
    * @param symbol The symbol for which to fetch the order book.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the order book result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOrderBook(
     symbol: string,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OrderBookResult> {
     return await this.get(`depth?symbol=${symbol}`, false, this.v1, kwargs);
   }
 
   /**
    * Fetches order books for all symbols.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the all order books result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchAllOrderBooks(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.AllOrderBooksResult> {
     return await this.get("depth/all", false, this.v2, kwargs);
   }
@@ -312,48 +306,42 @@ export class Client {
   /**
    * Fetches trades for a specific symbol.
    * @param symbol The symbol for which to fetch trades.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the trades result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchTrades(
     symbol: string,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.TradesResult> {
     return await this.get(`trades?symbol=${symbol}`, false, this.v1, kwargs);
   }
 
   /**
    * Fetches OHLC (Open, High, Low, Close) data for a specific symbol within a time range and resolution.
-   * @param symbol The symbol for which to fetch OHLC data.
-   * @param resolution The resolution of the OHLC data (e.g., 1, 5, 15, 30, 60 for minutes; 1D for days, etc.).
-   * @param from The start of the time range (Date object or UNIX timestamp).
-   * @param to The end of the time range (Date object or UNIX timestamp).
-   * @param kwargs Additional request options (optional).
+   * @param {GetCandlesParams} data The OHLC data parameters.
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the OHLC data result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOHLC(
-    symbol: string,
-    resolution: t.Resolution,
-    from: Date | number,
-    to: Date | number,
-    kwargs: t.RequestOptions = {},
+    data: t.params.GetCandlesParams,
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OHLCResult> {
-    if (from instanceof Date) {
-      from = from.getTime() / 1000;
+    if (data.from instanceof Date) {
+      data.from = data.from.getTime() / 1000;
     }
-    if (to instanceof Date) {
-      to = to.getTime() / 1000;
+    if (data.to instanceof Date) {
+      data.to = data.to.getTime() / 1000;
     }
 
     // @ts-expect-error will return a different response than `this.get`
     return await this.get("udf/history", false, this.v1, {
       data: {
-        symbol,
-        resolution,
-        from,
-        to,
+        symbol: data.symbol,
+        resolution: data.resolution,
+        from: data.from,
+        to: data.to,
       },
       ...kwargs,
     });
@@ -361,60 +349,60 @@ export class Client {
 
   /**
    * Fetches the profile information of the authenticated user.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the profile result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchProfile(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.ProfileResult> {
     return await this.get("account/profile", true, this.v1, kwargs);
   }
 
   /**
    * Fetches the account fee information of the authenticated user.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the fees result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchAccountFee(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.FeesResult> {
     return await this.get("account/fee", true, this.v1, kwargs);
   }
 
   /**
    * Fetches the card numbers associated with the authenticated user's account.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the card numbers result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchCardNumbers(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.CardNumbersResult> {
     return await this.get("account/card-numbers", true, this.v1, kwargs);
   }
 
   /**
    * Fetches the IBANs associated with the authenticated user's account.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the IBANs result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchIBANs(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.IBANsResult> {
     return await this.get("account/ibans", true, this.v1, kwargs);
   }
 
   /**
    * Fetches the balances of the authenticated user's account.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the balance result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchBalances(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.BalanceResult> {
     return await this.get("account/balances", true, this.v1, kwargs);
   }
@@ -422,13 +410,13 @@ export class Client {
   /**
    * Fetches the balance of a specific asset in the authenticated user's account.
    * @param asset The asset for which to fetch the balance.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the balance item, or null if the asset does not exist in the account.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchBalance(
     asset: string,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.BalanceItem | null> {
     return (await this.fetchBalances(kwargs)).result.balances[asset] ?? null;
   }
@@ -437,14 +425,14 @@ export class Client {
    * Initiates a money withdrawal from the authenticated user's account.
    * @param iban The IBAN to withdraw money to.
    * @param value The amount of money to withdraw.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the money withdrawal result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async moneyWithdrawal(
     iban: number,
     value: number,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.MoneyWithdrawalResult> {
     return await this.post("account/money-withdrawal", true, this.v1, {
       data: {
@@ -457,30 +445,22 @@ export class Client {
 
   /**
    * Initiates a cryptocurrency withdrawal from the authenticated user's account.
-   * @param coin The cryptocurrency to withdraw.
-   * @param network The network of the cryptocurrency (e.g., ERC20, BEP20, etc.).
-   * @param value The amount of cryptocurrency to withdraw.
-   * @param walletAddress The recipient wallet address.
-   * @param memo A memo or tag for the withdrawal (if required by the network).
-   * @param kwargs Additional request options (optional).
+   * @param {WithdrawParams} data The withdrawal data.
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the cryptocurrency withdrawal result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async cryptoWithdrawal(
-    coin: string,
-    network: string,
-    value: number,
-    walletAddress: string,
-    memo: string,
-    kwargs: t.RequestOptions = {},
+    data: t.params.WithdrawParams,
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.CryptoWithdrawalResult> {
     return await this.post("account/crypto-withdrawal", true, this.v1, {
       data: {
-        coin,
-        network,
-        value,
-        wallet_address: walletAddress,
-        memo,
+        coin: data.coin,
+        network: data.network,
+        value: data.value,
+        wallet_address: data.walletAddress,
+        memo: data.memo,
       },
       ...kwargs,
     });
@@ -490,14 +470,14 @@ export class Client {
    * Fetches the cryptocurrency deposit history of the authenticated user's account.
    * @param page The page number of results to fetch (optional).
    * @param perPage The number of results per page (optional).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the cryptocurrency deposit history result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchCryptoDepositHistory(
     page?: number,
     perPage?: number,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.CryptoDepositResult> {
     return await this.get("account/crypto-deposit", true, this.v1, {
       data: { page, per_page: perPage },
@@ -509,14 +489,14 @@ export class Client {
    * Fetches the cryptocurrency withdrawal history of the authenticated user's account.
    * @param page The page number of results to fetch (optional).
    * @param perPage The number of results per page (optional).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the cryptocurrency withdrawal history result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchCryptoWithdrawalHistory(
     page?: number,
     perPage?: number,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.CryptoWithdrawalHistoryResult> {
     return await this.get("account/crypto-withdrawal", true, this.v1, {
       data: { page, per_page: perPage },
@@ -526,33 +506,23 @@ export class Client {
 
   /**
    * Creates a new order on the authenticated user's account.
-   * @param symbol The trading pair symbol (e.g., BTC/USDT).
-   * @param type The type of order (e.g., LIMIT, MARKET).
-   * @param side The side of the order (e.g., BUY, SELL).
-   * @param quantity The quantity to buy or sell.
-   * @param price The price per unit (optional, required for LIMIT orders).
-   * @param clientID The client ID for the order (optional).
-   * @param kwargs Additional request options (optional).
+   * @param {PlaceOrderParams} data The order data.
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the order result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async createOrder(
-    symbol: string,
-    type: t.OrderType,
-    side: t.OrderSide,
-    quantity: number,
-    price?: number,
-    clientID?: string,
-    kwargs: t.RequestOptions = {},
+    data: t.params.PlaceOrderParams,
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.post("account/orders", true, this.v1, {
       data: {
-        symbol,
-        type,
-        side,
-        quantity,
-        price,
-        client_id: clientID,
+        symbol: data.symbol,
+        type: data.type,
+        side: data.side,
+        quantity: data.quantity,
+        price: data.price,
+        client_id: data.clientID,
       },
       ...kwargs,
     });
@@ -561,13 +531,13 @@ export class Client {
   /**
    * Fetches the status of a specific order.
    * @param clientOrderId The client order ID of the order to fetch.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the order result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOrderStatus(
     clientOrderId: string,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.get(
       `account/orders/${clientOrderId}`,
@@ -580,13 +550,13 @@ export class Client {
   /**
    * Cancels a specific order.
    * @param clientOrderId The client order ID of the order to cancel.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the order result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async cancelOrder(
     clientOrderId: string,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.delete(
       `account/orders/${clientOrderId}`,
@@ -599,13 +569,13 @@ export class Client {
   /**
    * Fetches the open orders of the authenticated user's account.
    * @param symbol The trading pair symbol (optional).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the open order result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOpenOrders(
     symbol?: string,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OpenOrderResult> {
     return await this.get("account/openOrders", true, this.v1, {
       data: { symbol },
@@ -617,14 +587,14 @@ export class Client {
    * Fetches the user's trade history.
    * @param symbol The trading pair symbol (optional).
    * @param side The side of the order (optional).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the user trades result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchUserTrades(
     symbol?: string,
     side?: t.OrderSide,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.UserTradesResult> {
     return await this.get("account/trades", true, this.v1, {
       data: { symbol, side },
@@ -634,12 +604,12 @@ export class Client {
 
   /**
    * Fetches OTC (Over-The-Counter) markets.
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the OTC markets result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOTCMarkets(
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OTCMarketsResult> {
     return await this.get("otc/markets", true, this.v1, kwargs);
   }
@@ -648,14 +618,14 @@ export class Client {
    * Fetches the OTC price for a specific symbol and order side.
    * @param symbol The trading pair symbol.
    * @param side The side of the order (BUY or SELL).
-   * @param kwargs Additional request options (optional).
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the OTC prices result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOTCPrice(
     symbol: string,
     side: t.OrderSide,
-    kwargs: t.RequestOptions = {},
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OTCPricesResult> {
     return await this.get("otc/price", true, this.v1, {
       data: { symbol, side },
@@ -665,21 +635,21 @@ export class Client {
 
   /**
    * Creates an OTC (Over-The-Counter) order.
-   * @param symbol The trading pair symbol.
-   * @param side The side of the order (BUY or SELL).
-   * @param amount The amount of the asset to buy or sell.
-   * @param kwargs Additional request options (optional).
+   * @param {PlaceOTCOrderParams} data The order data.
+   * @param {RequestOptions} kwargs Additional request options (optional).
    * @returns A Promise resolving to the order result.
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async createOTCOrder(
-    symbol: string,
-    side: t.OrderSide,
-    amount: number,
-    kwargs: t.RequestOptions = {},
+    data: t.params.PlaceOTCOrderParams,
+    kwargs: t.params.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.post("otc/orders", true, this.v1, {
-      data: { symbol, side, amount },
+      data: {
+        symbol: data.symbol,
+        side: data.side,
+        amount: data.amount,
+      },
       ...kwargs,
     });
   }
