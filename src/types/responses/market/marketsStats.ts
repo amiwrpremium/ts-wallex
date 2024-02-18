@@ -1,8 +1,8 @@
-// types/responses/marketsStats.ts
+// types/responses/market/marketsStats.ts
 
 /**
  * Module containing response types related to market statistics for interactions with the Wallex.ir cryptocurrency exchange API.
- * @module types/responses/marketsStats
+ * @module types/responses/market/marketsStats
  */
 
 import type { Response } from "../response";

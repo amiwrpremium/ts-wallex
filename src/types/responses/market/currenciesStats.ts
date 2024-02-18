@@ -1,8 +1,8 @@
-// types/responses/currenciesStats.ts
+// types/responses/market/currenciesStats.ts
 
 /**
  * Module containing response types related to currency statistics for interactions with the Wallex.ir cryptocurrency exchange API.
- * @module types/responses/currenciesStats
+ * @module types/responses/market/currenciesStats
  */
 
 import type { Response } from "../response";

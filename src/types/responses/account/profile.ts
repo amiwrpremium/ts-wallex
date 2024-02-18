@@ -10,7 +10,7 @@ import type { Response } from "../response";
 /**
  * Represents the address information.
  */
-interface Address {
+export interface Address {
   city: string;           // The city name.
   country: string;        // The country name.
   location: string;       // The location.
@@ -22,7 +22,7 @@ interface Address {
 /**
  * Represents the phone number information.
  */
-interface PhoneNumber {
+export interface PhoneNumber {
   area_code: string;    // The area code.
   main_number: string;  // The main number.
 }
@@ -30,7 +30,7 @@ interface PhoneNumber {
 /**
  * Represents the actions' status.
  */
-interface Actions {
+export interface Actions {
   is_enable: boolean;  // Specifies whether the action is enabled.
   label: string;       // The label for the action.
 }
@@ -38,7 +38,7 @@ interface Actions {
 /**
  * Represents the actions for notifications.
  */
-interface NotificationActions {
+export interface NotificationActions {
   coin_deposit: Actions;                           // Actions for coin deposit notification.
   coin_withdraw: Actions;                          // Actions for coin withdraw notification.
   money_deposit: Actions;                          // Actions for money deposit notification.
@@ -60,7 +60,7 @@ interface NotificationActions {
 /**
  * Represents the notification settings.
  */
-interface Notification {
+export interface Notification {
   email: {
     is_enable: boolean;         // Specifies whether email notification is enabled.
     actions: NotificationActions; // Actions for email notification.
@@ -88,7 +88,7 @@ interface Notification {
 /**
  * Represents the status information.
  */
-interface Status {
+export interface Status {
   first_name: string;          // The first name.
   last_name: string;           // The last name.
   national_code: string;       // The national code.
@@ -106,7 +106,7 @@ interface Status {
 /**
  * Represents the KYC (Know Your Customer) information details.
  */
-interface KycInfoDetails {
+export interface KycInfoDetails {
   mobile_activation: boolean;  // Specifies whether mobile activation is completed.
   personal_info: boolean;      // Specifies whether personal information is completed.
   financial_info: boolean;     // Specifies whether financial information is completed.
@@ -119,7 +119,7 @@ interface KycInfoDetails {
 /**
  * Represents the KYC (Know Your Customer) information.
  */
-interface KycInfo {
+export interface KycInfo {
   details: KycInfoDetails;  // The KYC details.
   level: number;             // The KYC level.
 }
@@ -127,7 +127,7 @@ interface KycInfo {
 /**
  * Represents the meta information.
  */
-interface Meta {
+export interface Meta {
   disabled_features: string[];  // The disabled features.
 }
 

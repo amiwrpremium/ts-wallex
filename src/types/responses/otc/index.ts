@@ -1,8 +1,8 @@
-// types/response/otc/index.ts
+// types/responses/otc/index.ts
 
 /**
  * Module exporting response types related to Over-The-Counter (OTC) interactions with the Wallex.ir cryptocurrency exchange API.
- * @module types/response/otc/index
+ * @module types/responses/otc/index
  */
 
 // Export OTC markets result type
