@@ -15,6 +15,7 @@ const config = {
         "test",
         "chore",
         "release",
+        "ci",
       ],
     ],
   },
