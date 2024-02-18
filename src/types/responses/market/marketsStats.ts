@@ -89,5 +89,4 @@ export interface Direction {
  * @interface
  * @extends Response
  */
-export interface MarketsStatsResult extends Response<MarketStatsResponse> {
-}
+export interface MarketsStatsResult extends Response<MarketStatsResponse> {}

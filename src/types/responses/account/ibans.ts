@@ -36,5 +36,4 @@ export interface BankDetails {
  * @interface
  * @extends Response
  */
-export interface IBANsResult extends Response<IBANsResponse[]> {
-}
+export interface IBANsResult extends Response<IBANsResponse[]> {}

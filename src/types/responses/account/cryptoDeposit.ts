@@ -68,5 +68,5 @@ export interface Wallet {
  * @interface
  * @extends Response
  */
-export interface CryptoDepositResult extends Response<CryptoDepositResponse[]> {
-}
+export interface CryptoDepositResult
+  extends Response<CryptoDepositResponse[]> {}

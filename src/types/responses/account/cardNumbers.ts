@@ -24,5 +24,4 @@ export interface CardNumbersResponse {
  * @interface
  * @extends Response
  */
-export interface CardNumbersResult extends Response<CardNumbersResponse> {
-}
+export interface CardNumbersResult extends Response<CardNumbersResponse> {}

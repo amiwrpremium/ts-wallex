@@ -60,5 +60,5 @@ export interface CurrenciesStatsResponse {
  * @interface
  * @extends Response
  */
-export interface CurrenciesStatsResult extends Response<CurrenciesStatsResponse[]> {
-}
+export interface CurrenciesStatsResult
+  extends Response<CurrenciesStatsResponse[]> {}

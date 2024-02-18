@@ -15,5 +15,5 @@ export type { UserTradesResult } from "./trades";
 export type { CryptoDepositResult } from "./cryptoDeposit";
 export type {
   CryptoWithdrawalHistoryResult,
-  CryptoWithdrawalResult
+  CryptoWithdrawalResult,
 } from "./cryptoWithdrawal";

@@ -36,6 +36,5 @@ export interface Detail {
  * @interface
  * @extends Response
  */
-export interface MoneyWithdrawalResult extends Response<MoneyWithdrawalResponse> {
-}
-
+export interface MoneyWithdrawalResult
+  extends Response<MoneyWithdrawalResponse> {}

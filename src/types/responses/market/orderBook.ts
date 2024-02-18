@@ -41,13 +41,12 @@ export interface Bid {
  * @interface
  * @extends Response
  */
-export interface OrderBookResult extends Response<OrderBookResponse> {
-}
+export interface OrderBookResult extends Response<OrderBookResponse> {}
 
 /**
  * Represents the result of a response containing all order books.
  * @interface
  * @extends Response
  */
-export interface AllOrderBooksResult extends Response<Record<string, OrderBookResponse>> {
-}
+export interface AllOrderBooksResult
+  extends Response<Record<string, OrderBookResponse>> {}

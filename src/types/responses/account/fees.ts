@@ -44,5 +44,4 @@ export interface MetaData {
  * @interface
  * @extends Response
  */
-export interface FeesResult extends Response<FeesResponse> {
-}
+export interface FeesResult extends Response<FeesResponse> {}

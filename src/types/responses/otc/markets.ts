@@ -58,5 +58,4 @@ export interface Stats {
 /**
  * Represents the result of an OTC markets response.
  */
-export interface OTCMarketsResult extends Response<OTCMarketsResponse> {
-}
+export interface OTCMarketsResult extends Response<OTCMarketsResponse> {}

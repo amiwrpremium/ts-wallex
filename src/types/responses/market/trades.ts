@@ -34,6 +34,4 @@ export interface LatestTrade {
  * @interface
  * @extends Response
  */
-export interface TradesResult extends Response<TradesResponse> {
-}
-
+export interface TradesResult extends Response<TradesResponse> {}

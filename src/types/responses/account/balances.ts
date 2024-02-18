@@ -40,5 +40,4 @@ export interface BalanceResponse {
  * @interface
  * @extends Response
  */
-export interface BalanceResult extends Response<BalanceResponse> {
-}
+export interface BalanceResult extends Response<BalanceResponse> {}

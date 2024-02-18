@@ -4,7 +4,11 @@
  * @module wallex
  */
 
-import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from "axios";
+import axios, {
+  AxiosError,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+} from "axios";
 
 import type * as t from "./types";
 import { APIError, RequestException, APIErrorDetailed } from "./exceptions";
@@ -62,7 +66,7 @@ export class Client {
   constructor(
     apiKey?: string,
     requestParams?: any,
-    raiseDetailedErrors: boolean = false
+    raiseDetailedErrors: boolean = false,
   ) {
     this.apiKey = apiKey;
     if (requestParams) {
@@ -73,8 +77,8 @@ export class Client {
     this.session = axios.create({
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     });
 
     this.raiseDetailedErrors = raiseDetailedErrors;
@@ -100,7 +104,7 @@ export class Client {
   private getRequestKwargs(
     method: string,
     signed: boolean,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): AxiosRequestConfig {
     // Set default timeout if not provided
     kwargs.timeout = kwargs.timeout || this.requestTimeout;
@@ -145,7 +149,7 @@ export class Client {
     method: string,
     uri: string,
     signed: boolean = false,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     const requestConfig = this.getRequestKwargs(method, signed, kwargs);
 
@@ -159,7 +163,7 @@ export class Client {
           if (this.raiseDetailedErrors) {
             throw new APIErrorDetailed(
               error.response,
-              "Error making request to Wallex"
+              "Error making request to Wallex",
             );
           }
           throw new APIError(
@@ -167,7 +171,7 @@ export class Client {
             error.response.data.code,
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             error.response.data.message,
-            error.response.data.result
+            error.response.data.result,
           );
         } else if (error.request) {
           throw new RequestException(`No response received from Wallex`);
@@ -195,7 +199,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     const uri = this.createApiUri(path, version);
     return await this.request(method, uri, signed, kwargs);
@@ -214,7 +218,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     return await this.requestAPI("GET", path, signed, version, kwargs);
   }
@@ -232,7 +236,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     return await this.requestAPI("POST", path, signed, version, kwargs);
   }
@@ -250,7 +254,7 @@ export class Client {
     path: string,
     signed: boolean = false,
     version: string = this.v1,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.Response<any>> {
     return await this.requestAPI("DELETE", path, signed, version, kwargs);
   }
@@ -262,7 +266,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchMarkets(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.MarketsStatsResult> {
     return await this.get("markets", false, this.v1, kwargs);
   }
@@ -274,7 +278,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchCurrenciesStats(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.CurrenciesStatsResult> {
     return await this.get("currencies/stats", false, this.v1, kwargs);
   }
@@ -288,7 +292,7 @@ export class Client {
    */
   public async fetchOrderBook(
     symbol: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OrderBookResult> {
     return await this.get(`depth?symbol=${symbol}`, false, this.v1, kwargs);
   }
@@ -300,7 +304,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchAllOrderBooks(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.AllOrderBooksResult> {
     return await this.get("depth/all", false, this.v2, kwargs);
   }
@@ -314,7 +318,7 @@ export class Client {
    */
   public async fetchTrades(
     symbol: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.TradesResult> {
     return await this.get(`trades?symbol=${symbol}`, false, this.v1, kwargs);
   }
@@ -334,7 +338,7 @@ export class Client {
     resolution: t.Resolution,
     from: Date | number,
     to: Date | number,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OHLCResult> {
     if (from instanceof Date) {
       from = from.getTime() / 1000;
@@ -349,9 +353,9 @@ export class Client {
         symbol,
         resolution,
         from,
-        to
+        to,
       },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -362,7 +366,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchProfile(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.ProfileResult> {
     return await this.get("account/profile", true, this.v1, kwargs);
   }
@@ -374,7 +378,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchAccountFee(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.FeesResult> {
     return await this.get("account/fee", true, this.v1, kwargs);
   }
@@ -386,7 +390,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchCardNumbers(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.CardNumbersResult> {
     return await this.get("account/card-numbers", true, this.v1, kwargs);
   }
@@ -398,7 +402,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchIBANs(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.IBANsResult> {
     return await this.get("account/ibans", true, this.v1, kwargs);
   }
@@ -410,7 +414,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchBalances(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.BalanceResult> {
     return await this.get("account/balances", true, this.v1, kwargs);
   }
@@ -424,7 +428,7 @@ export class Client {
    */
   public async fetchBalance(
     asset: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.BalanceItem | null> {
     return (await this.fetchBalances(kwargs)).result.balances[asset] ?? null;
   }
@@ -440,14 +444,14 @@ export class Client {
   public async moneyWithdrawal(
     iban: number,
     value: number,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.MoneyWithdrawalResult> {
     return await this.post("account/money-withdrawal", true, this.v1, {
       data: {
         iban,
-        value
+        value,
       },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -468,7 +472,7 @@ export class Client {
     value: number,
     walletAddress: string,
     memo: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.CryptoWithdrawalResult> {
     return await this.post("account/crypto-withdrawal", true, this.v1, {
       data: {
@@ -476,9 +480,9 @@ export class Client {
         network,
         value,
         wallet_address: walletAddress,
-        memo
+        memo,
       },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -493,11 +497,11 @@ export class Client {
   public async fetchCryptoDepositHistory(
     page?: number,
     perPage?: number,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.CryptoDepositResult> {
     return await this.get("account/crypto-deposit", true, this.v1, {
       data: { page, per_page: perPage },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -512,11 +516,11 @@ export class Client {
   public async fetchCryptoWithdrawalHistory(
     page?: number,
     perPage?: number,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.CryptoWithdrawalHistoryResult> {
     return await this.get("account/crypto-withdrawal", true, this.v1, {
       data: { page, per_page: perPage },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -539,7 +543,7 @@ export class Client {
     quantity: number,
     price?: number,
     clientID?: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.post("account/orders", true, this.v1, {
       data: {
@@ -548,9 +552,9 @@ export class Client {
         side,
         quantity,
         price,
-        client_id: clientID
+        client_id: clientID,
       },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -563,13 +567,13 @@ export class Client {
    */
   public async fetchOrderStatus(
     clientOrderId: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.get(
       `account/orders/${clientOrderId}`,
       true,
       this.v1,
-      kwargs
+      kwargs,
     );
   }
 
@@ -582,13 +586,13 @@ export class Client {
    */
   public async cancelOrder(
     clientOrderId: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.delete(
       `account/orders/${clientOrderId}`,
       true,
       this.v1,
-      kwargs
+      kwargs,
     );
   }
 
@@ -601,11 +605,11 @@ export class Client {
    */
   public async fetchOpenOrders(
     symbol?: string,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OpenOrderResult> {
     return await this.get("account/openOrders", true, this.v1, {
       data: { symbol },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -620,11 +624,11 @@ export class Client {
   public async fetchUserTrades(
     symbol?: string,
     side?: t.OrderSide,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.UserTradesResult> {
     return await this.get("account/trades", true, this.v1, {
       data: { symbol, side },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -635,7 +639,7 @@ export class Client {
    * @throws {APIError | APIErrorDetailed | RequestException} If an error occurs during the request.
    */
   public async fetchOTCMarkets(
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OTCMarketsResult> {
     return await this.get("otc/markets", true, this.v1, kwargs);
   }
@@ -651,11 +655,11 @@ export class Client {
   public async fetchOTCPrice(
     symbol: string,
     side: t.OrderSide,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OTCPricesResult> {
     return await this.get("otc/price", true, this.v1, {
       data: { symbol, side },
-      ...kwargs
+      ...kwargs,
     });
   }
 
@@ -672,11 +676,11 @@ export class Client {
     symbol: string,
     side: t.OrderSide,
     amount: number,
-    kwargs: t.RequestOptions = {}
+    kwargs: t.RequestOptions = {},
   ): Promise<t.response.OrderResult> {
     return await this.post("otc/orders", true, this.v1, {
       data: { symbol, side, amount },
-      ...kwargs
+      ...kwargs,
     });
   }
 }

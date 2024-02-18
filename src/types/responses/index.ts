@@ -15,7 +15,7 @@ export type {
   OrderBookResult,
   AllOrderBooksResult,
   MarketsStatsResult,
-  CurrenciesStatsResult
+  CurrenciesStatsResult,
 } from "./market";
 
 // Export types related to account responses
@@ -30,18 +30,11 @@ export type {
   CryptoWithdrawalResult,
   CryptoWithdrawalHistoryResult,
   UserTradesResult,
-  CryptoDepositResult
+  CryptoDepositResult,
 } from "./account";
 
 // Export types related to order responses
-export type {
-  OrderStatus,
-  OrderResult,
-  OpenOrderResult
-} from "./order";
+export type { OrderStatus, OrderResult, OpenOrderResult } from "./order";
 
 // Export types related to OTC (Over-The-Counter) responses
-export type {
-  OTCMarketsResult,
-  OTCPricesResult
-} from "./otc";
+export type { OTCMarketsResult, OTCPricesResult } from "./otc";
