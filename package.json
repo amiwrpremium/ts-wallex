@@ -36,8 +36,7 @@
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": " npx typedoc",
-    "postdocs": "mv docs/index.html docs/index.md"
+    "docs": " npx typedoc"
   },
   "repository": {
     "type": "git",
