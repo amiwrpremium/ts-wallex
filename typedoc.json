@@ -7,5 +7,7 @@
   "entryPoints": [
     "src/index.ts",
     "src/types/**/*.ts"
-  ]
+  ],
+  "plugin": ["typedoc-material-theme"],
+  "themeColor": "#1d4ed8"
 }

@@ -14,6 +14,7 @@
     "husky": "^9.0.11",
     "prettier": "3.2.5",
     "typedoc": "^0.25.8",
+    "typedoc-material-theme": "^1.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
