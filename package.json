@@ -1,7 +1,12 @@
 {
   "name": "ts-wallex",
   "version": "0.0.2",
+  "author": {
+    "name": "Amir Mahdi Erfani",
+    "email": "amiwrpremium@gmail.com"
+  },
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "description": "A simple library to interact with the Wallex API",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -24,8 +29,35 @@
     "/dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "prepare": "husky",
-    "cleanJs": "find ./src -type f -name \"*.js\" -delete"
-  }
+    "cleanJs": "find ./src -type f -name \"*.js\" -delete",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --ext .ts src --fix",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": " npx typedoc",
+    "postdocs": "mv docs/index.html docs/index.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amiwrpremium/ts-wallex.git"
+  },
+  "keywords": [
+    "wallex",
+    "api",
+    "wallex-js",
+    "wallex-ts",
+    "wallex-api",
+    "crypto",
+    "cryptocurrency"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "email": "amiwrpremium@gmail.com",
+    "url": "https://github.com/amiwrpremium/ts-wallex/issues"
+  },
+  "homepage": "https://github.com/amiwrpremium/ts-wallex#readme",
+  "readme": "README.md",
+  "private": false
 }
