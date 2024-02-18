@@ -1,0 +1,11 @@
+{
+  "name": "ts-wallex",
+  "gitRevision": "HEAD",
+  "readme": "./README.md",
+  "out": "docs",
+  "gitRemote": "origin",
+  "entryPoints": [
+    "src/index.ts",
+    "src/types/**/*.ts"
+  ]
+}
