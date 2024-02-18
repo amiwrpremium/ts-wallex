@@ -2,9 +2,9 @@
 
 ## Description
 
-ts-wallex is an SDK designed to simplify interactions with the Wallex.ir 
-cryptocurrency exchange API. It utilizes Axios, a promise-based 
-HTTP client for Node.js and browsers, to facilitate seamless communication 
+ts-wallex is an SDK designed to simplify interactions with the Wallex.ir \
+cryptocurrency exchange API. It utilizes Axios, a promise-based \
+HTTP client for Node.js and browsers, to facilitate seamless communication \
 with the API endpoints.
 
 ## Installation
@@ -45,4 +45,5 @@ You can find the full documentation for the Wallex API [here](https://api-docs.w
 For detailed documentation on available methods and their usage, refer to the [API documentation](https://api-docs.wallex.ir).
 
 ## License
+
 See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
