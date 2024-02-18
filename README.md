@@ -44,3 +44,7 @@ For detailed documentation on available methods and their usage, refer to the [L
 ## License
 
 See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
+
+## CHANGELOG
+
+For a detailed list of changes, see the [CHANGELOG](CHANGELOG.md).
